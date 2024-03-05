@@ -1,5 +1,11 @@
+import Layout from "../core/Layout";
+
 const Signup = () => (
-  <div>Signup</div>
+  <Layout
+    title='Signup'
+    description='Signup to Node React E-commerce App'>
+    ...
+  </Layout>
 );
 
 export default Signup;
