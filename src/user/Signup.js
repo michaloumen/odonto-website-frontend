@@ -8,7 +8,6 @@ const Signup = () => {
     name: '',
     email: '',
     password: '',
-    error: '',
     success: false
   });
   const [submitted, setSubmitted] = useState(false);
