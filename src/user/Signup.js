@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Layout from '../core/Layout';
-import { API } from '../config';
+import { signup } from '../auth';
 
 const Signup = () => {
   const [values, setValues] = useState({
@@ -53,24 +53,6 @@ const Signup = () => {
       .catch(error => {
         console.error("Erro na inscrição:", error);
         setValues({ ...values, error: "Erro ao tentar se inscrever. Por favor, tente novamente.", success: false });
-      });
-  };
-
-  const signup = user => {
-    return fetch(`${API}/signup`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(user)
-    })
-      .then(response => {
-        return response.json();
-      })
-      .catch(err => {
-        console.error("Erro na requisição:", err);
-        throw err; 
       });
   };
 
