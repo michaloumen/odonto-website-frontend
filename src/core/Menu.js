@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { signout } from '../auth';
 
 const isActive = (path) => {
   if (window.location.pathname === path) {
@@ -9,8 +10,8 @@ const isActive = (path) => {
   }
 };
 
-const Menu = ({ history }) => {
-  useNavigate();
+const Menu = () => {
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -25,7 +26,7 @@ const Menu = ({ history }) => {
           </Link>
         </li>
 
-        <li className='nav-item' style={isActive(history, '/')}>
+        <li className='nav-item' style={isActive('/')}>
           <Link
             className='nav-link'
             style={isActive('/signin')}
@@ -43,6 +44,18 @@ const Menu = ({ history }) => {
           >
             Signup
           </Link>
+        </li>
+
+        <li className='nav-item'>
+          <span
+            className='nav-link'
+            style={{ cursor: 'pointer', color: '#ffffff' }}
+            onClick={() => signout(() => {
+              navigate('/');
+            })}
+          >
+            Signout
+          </span>
         </li>
       </ul>
     </div>

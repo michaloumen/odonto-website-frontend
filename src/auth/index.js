@@ -12,13 +12,13 @@ export const signup = user => {
     .then(response => response.json())
     .then(data => {
       if (data.error || data.errors) {
-        throw data; 
+        throw data;
       }
-      return data; 
+      return data;
     })
     .catch(err => {
       console.error("Error during signup:", err);
-      throw err; 
+      throw err;
     });
 };
 
@@ -44,5 +44,19 @@ export const authenticate = (data, next) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('jwt', JSON.stringify(data))
     next();
+  }
+};
+
+export const signout = (next) => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('jwt')
+    next();
+    return fetch(`${API}/signout`, {
+      method: 'GET',
+    })
+      .then(response => {
+        console.log('signout', response)
+      })
+      .catch(err => console.log(err));
   }
 };

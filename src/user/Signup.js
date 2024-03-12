@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Layout from '../core/Layout';
+import { Link } from 'react-router-dom';
 import { signup } from '../auth';
 
 const Signup = () => {
@@ -100,7 +101,7 @@ const Signup = () => {
       className='alert alert-info'
       style={{ display: success ? '' : 'none' }}
     >
-      New account is created. Please signin
+      New account is created. Please <Link to='/signin'>Signin</Link>.
     </div>
   );
 
