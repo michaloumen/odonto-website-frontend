@@ -9,12 +9,16 @@ export const signup = user => {
     },
     body: JSON.stringify(user)
   })
-    .then(response => {
-      return response.json();
+    .then(response => response.json())
+    .then(data => {
+      if (data.error || data.errors) {
+        throw data; 
+      }
+      return data; 
     })
     .catch(err => {
-      console.error("Erro na requisição:", err);
-      throw err;
+      console.error("Error during signup:", err);
+      throw err; 
     });
 };
 
