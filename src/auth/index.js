@@ -14,7 +14,7 @@ export const signup = user => {
     })
     .catch(err => {
       console.error("Erro na requisição:", err);
-      throw err; 
+      throw err;
     });
 };
 
@@ -32,6 +32,13 @@ export const signin = user => {
     })
     .catch(err => {
       console.error("Erro na requisição:", err);
-      throw err; 
+      throw err;
     });
+};
+
+export const authenticate = (data, next) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('jwt', JSON.stringify(data))
+    next();
+  }
 };
