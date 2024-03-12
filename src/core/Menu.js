@@ -26,6 +26,16 @@ const Menu = () => {
           </Link>
         </li>
 
+        <li className='nav-item'>
+          <Link
+            className='nav-link'
+            style={isActive('/dashboard')}
+            to='/dashboard'
+          >
+            Dashboard
+          </Link>
+        </li>
+
         {!isAuthenticated() && (
           <>
             <li className='nav-item' style={isActive('/')}>
