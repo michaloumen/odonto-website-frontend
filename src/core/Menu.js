@@ -35,8 +35,8 @@ const Menu = () => {
         <li className='nav-item'>
           <Link
             className='nav-link'
-            style={isActive('/dashboard')}
-            to='/dashboard'
+            style={isActive('/user/dashboard')}
+            to='/user/dashboard'
           >
             Dashboard
           </Link>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Layout from '../core/Layout';
-import { signin, authenticate } from '../auth';
+import { signin, authenticate, isAuthenticated } from '../auth';
 import { useLanguageContext } from '../hooks/LanguageContext';
 import texts from '../components/Texts';
 
@@ -18,6 +18,7 @@ const Signin = () => {
   });
 
   const { email, password, loading, redirectToReferrer, error } = values;
+  const { user } = isAuthenticated();
 
   const handleChange = name => event => {
     setValues({ ...values, error: false, [name]: event.target.value });
@@ -96,7 +97,11 @@ const Signin = () => {
 
   const redirectUser = () => {
     if (redirectToReferrer) {
-      return <Navigate to='/' />;
+      if (user && user.role === 1) {
+        return <Navigate to='/admin/dashboard' />
+      } else {
+        return <Navigate to='/user/dashboard' />
+      }
     }
   };
 
