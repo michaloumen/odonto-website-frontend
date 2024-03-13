@@ -2,8 +2,13 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Layout from '../core/Layout';
 import { signin, authenticate } from '../auth';
+import { useLanguageContext } from '../hooks/LanguageContext';
+import texts from '../components/Texts';
 
 const Signin = () => {
+  const { isEnglishLanguage } = useLanguageContext();
+  const signinMessages = texts[isEnglishLanguage ? 'en' : 'ptbr'];
+
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -23,22 +28,21 @@ const Signin = () => {
     setValues({ ...values, error: false, loading: true });
 
     signin({ email, password })
-    .then(data => {
-      if (data.err) { 
-        setValues({ ...values, error: data.err, loading: false }); 
-      } else {
-        authenticate(data, () => {
-          setValues({
-            ...values,
-            redirectToReferrer: true
+      .then(data => {
+        if (data.err || data.error) {
+          setValues({ ...values, error: data.err || data.error, loading: false });
+        } else {
+          authenticate(data, () => {
+            setValues({
+              ...values,
+              redirectToReferrer: true
+            });
           });
-        });
-      }
-    })
-    .catch(err => {
-      console.error("Erro na inscrição:", err);
-      setValues({ ...values, error: "Erro ao tentar se inscrever. Por favor, tente novamente.", loading: false });
-    });
+        }
+      })
+      .catch(err => {
+        setValues({ ...values, error: err, loading: false });
+      });
   };
 
   const signupForm = () => (
@@ -53,11 +57,10 @@ const Signin = () => {
           value={email}
           required
         />
-        <div className='invalid-feedback'>Email is required.</div>
       </div>
 
       <div className='form-group'>
-        <label className='text-muted'>Password</label>
+        <label className='text-muted'>{signinMessages.password}</label>
         <input
           onChange={handleChange('password')}
           type='password'
@@ -65,28 +68,28 @@ const Signin = () => {
           value={password}
           required
         />
-        <div className='invalid-feedback'>Password is required.</div>
       </div>
 
       <button
         onClick={clickSubmit}
         className='btn btn-primary mt-3'
       >
-        Submit
+        {signinMessages.button}
       </button>
     </form>
   );
-
-  const showError = () => (
-    <div className='alert alert-danger' style={{ display: error ? '' : 'none' }}>
-      {error}
-    </div>
+  const showError = (error) => (
+    error && (
+      <div className='alert alert-danger'>
+        <div className='error-message'>{error}</div>
+      </div>
+    )
   );
 
   const showLoading = () => (
     loading && (
       <div className='alert alert-info'>
-        <h2>Loading...</h2>
+        <h2>{signinMessages.loading}</h2>
       </div>
     )
   );
@@ -104,7 +107,7 @@ const Signin = () => {
       className='container col-md-8 offset-md-2'
     >
       {showLoading()}
-      {showError()}
+      {showError(error)}
       {signupForm()}
       {redirectUser()}
     </Layout>
