@@ -23,22 +23,22 @@ const Signin = () => {
     setValues({ ...values, error: false, loading: true });
 
     signin({ email, password })
-      .then(data => {
-        if (data.error) {
-          setValues({ ...values, error: data.error, loading: false });
-        } else {
-          authenticate(data, () => {
-            setValues({
-              ...values,
-              redirectToReferrer: true
-            });
+    .then(data => {
+      if (data.err) { 
+        setValues({ ...values, error: data.err, loading: false }); 
+      } else {
+        authenticate(data, () => {
+          setValues({
+            ...values,
+            redirectToReferrer: true
           });
-        }
-      })
-      .catch(err => {
-        console.error("Erro na inscrição:", err);
-        setValues({ ...values, error: "Erro ao tentar se inscrever. Por favor, tente novamente.", loading: false });
-      });
+        });
+      }
+    })
+    .catch(err => {
+      console.error("Erro na inscrição:", err);
+      setValues({ ...values, error: "Erro ao tentar se inscrever. Por favor, tente novamente.", loading: false });
+    });
   };
 
   const signupForm = () => (
