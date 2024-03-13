@@ -3,6 +3,7 @@ import Signup from './Signup';
 import Signin from './Signin';
 import Home from '../core/Home';
 import Dashboard from './UserDashboard';
+import LanguageProvider from '../hooks/LanguageContext';
 
 const AppRoutes = () => {
   return (
@@ -17,9 +18,11 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </LanguageProvider>
   );
 };
 

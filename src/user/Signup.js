@@ -2,8 +2,13 @@ import { useState } from 'react';
 import Layout from '../core/Layout';
 import { Link } from 'react-router-dom';
 import { signup } from '../auth';
+import { useLanguageContext } from '../hooks/LanguageContext';
+import texts from '../components/Texts';
 
 const Signup = () => {
+  const { isEnglishLanguage } = useLanguageContext();
+  const signupMessages = texts[isEnglishLanguage ? 'en' : 'ptbr'];
+
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -26,7 +31,7 @@ const Signup = () => {
       if (data && (data.error || data.errors)) {
         setValues({ ...values, errors: data.error ? [data.error] : data.errors, success: false });
       } else if (data && data.err && data.err.includes("11000 duplicate key error collection")) {
-        setValues({ ...values, errors: ["Email already exists"], success: false });
+        setValues({ ...values, errors: signupMessages.signup.errorEmail, success: false });
       } else {
         setValues({
           ...values,
@@ -46,7 +51,7 @@ const Signup = () => {
   const signupForm = () => (
     <form>
       <div className='form-group'>
-        <label className='text-muted'>Name</label>
+        <label className='text-muted'>{signupMessages.signup.name}</label>
         <input
           type='text'
           className='form-control'
@@ -66,7 +71,7 @@ const Signup = () => {
       </div>
 
       <div className='form-group'>
-        <label className='text-muted'>Password</label>
+        <label className='text-muted'>{signupMessages.password}</label>
         <input
           type='password'
           className='form-control'
@@ -79,29 +84,38 @@ const Signup = () => {
         className='btn btn-primary mt-3'
         onClick={clickSubmit}
       >
-        Submit
+        {signupMessages.button}
       </button>
     </form>
   );
 
-  const showError = (errors) => (
-    errors.length > 0 && (
-      <div className='alert alert-danger'>
-        {errors.map((error, index) => (
-          error !== 'Invalid value' && (
-            <div key={index} className='error-message'>{error}</div>
-          )
-        ))}
-      </div>
-    )
-  );
+  const showError = (errors) => {
+    if (errors && (typeof errors === 'string' || Array.isArray(errors))) {
+      if (errors.length > 0) {
+        return (
+          <div className='alert alert-danger'>
+            {(typeof errors === 'string') ? (
+              <div className='error-message'>{errors}</div>
+            ) : (
+              errors.map((error, index) => (
+                error !== 'Invalid value' && (
+                  <div key={index} className='error-message'>{error}</div>
+                )
+              ))
+            )}
+          </div>
+        );
+      }
+    }
+    return null;
+  };
 
   const showSuccess = () => (
     <div
       className='alert alert-info'
       style={{ display: success ? '' : 'none' }}
     >
-      New account is created. Please <Link to='/signin'>Signin</Link>.
+      {signupMessages.signup.showSuccess} <Link to='/signin'>{signupMessages.navigation.signin}</Link>.
     </div>
   );
 

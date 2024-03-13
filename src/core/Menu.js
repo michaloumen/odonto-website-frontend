@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signout, isAuthenticated } from '../auth';
+import Tradutor from '../components/Tradutor';
+import texts from '../components/Texts';
+import { useLanguageContext } from '../hooks/LanguageContext';
 
 const isActive = (path) => {
   if (window.location.pathname === path) {
@@ -11,6 +14,9 @@ const isActive = (path) => {
 };
 
 const Menu = () => {
+  const { isEnglishLanguage } = useLanguageContext();
+  const menuMessages = texts[isEnglishLanguage ? 'en' : 'ptbr'].navigation;
+
   const navigate = useNavigate();
 
   return (
@@ -44,7 +50,7 @@ const Menu = () => {
                 style={isActive('/signin')}
                 to='/signin'
               >
-                Signin
+                {menuMessages.signin}
               </Link>
             </li>
 
@@ -54,7 +60,7 @@ const Menu = () => {
                 style={isActive('/signup')}
                 to='/signup'
               >
-                Signup
+                {menuMessages.signup}
               </Link>
             </li>
           </>
@@ -73,6 +79,10 @@ const Menu = () => {
             </span>
           </li>
         )}
+
+        <li className='nav-item'>
+          <Tradutor />
+        </li>
       </ul>
     </div>
   );
